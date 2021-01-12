@@ -13,7 +13,7 @@ public class TakingGuidelineTest {
     @BeforeEach
     void setUp() {
 
-        guideline = new TakingGuideline(dayMoment.AFTERMEALS, 2, "medicamento para la tos", 3,4, FqUnit.WEEK);
+        guideline = new TakingGuideline(dayMoment.AFTERMEALS, 2f, "medicamento para la tos", 4f,4f, FqUnit.WEEK);
 
     }
 
@@ -60,17 +60,20 @@ public class TakingGuidelineTest {
 
     @Test
     public void TestsetPosology(){
-       Posology pos =  new Posology(4, 4, FqUnit.MONTH);
+       Posology pos =  new Posology(4f, 4f, FqUnit.MONTH);
        guideline.setPosology(pos);
        assertEquals(guideline.getPosology(),pos);
     }
 
     @Test
     public void TestgetPosology(){
-        Posology pos =  new Posology(4, 4, FqUnit.MONTH);
-        guideline.setPosology(pos);
-        assertEquals(guideline.getPosology(), pos);
-        assertNotEquals(guideline.getPosology(), new Posology(2,6, FqUnit.DAY));
+        Posology pos1 = new Posology(4f, 4f, FqUnit.MONTH);
+        Posology pos2 =new Posology(2f,6f, FqUnit.DAY);
+
+        guideline.setPosology(pos1);
+
+        assertEquals(guideline.getPosology(), pos1);
+        assertNotEquals(guideline.getPosology(), pos2);
     }
 
 }
