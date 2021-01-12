@@ -29,5 +29,4 @@ public class TakingGuideline {
 
     public void setPosology(Posology posology) { this.posology = posology; }
 
-
 }
