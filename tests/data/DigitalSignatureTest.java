@@ -1,6 +1,8 @@
 package data;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
+
+import java.nio.charset.StandardCharsets;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DigitalSignatureTest {
@@ -15,29 +17,40 @@ public class DigitalSignatureTest {
 
     @Test
     void testEquals() {
-        DigitalSignature sign1 = new DigitalSignature ("DOCTOR".getBytes());
-        DigitalSignature sign2 = new DigitalSignature ("DOCTOR".getBytes());
-        DigitalSignature sign3 = new DigitalSignature ("DOCTORA".getBytes());
+        String signature1 = "Sign1";
+        String signature2 = "Sign2";
+        String signature3 = "Sign3";
+        String signatureR = "Sign1";
 
-        assertEquals(sign1, sign1);
-        assertEquals(sign1, sign2);
-        assertNotEquals(sign1, sign3);
+        DigitalSignature digSign1 = new DigitalSignature (signature1.getBytes());
+        DigitalSignature digSign2 = new DigitalSignature (signature2.getBytes());
+        DigitalSignature digSign3 = new DigitalSignature (signature3.getBytes());
+        DigitalSignature digSignR = new DigitalSignature (signatureR.getBytes());
+
+        assertEquals(digSign1, digSignR);
+        assertEquals(digSign1, digSign1);
+        assertNotEquals(digSign2, digSign3);
     }
 
     @Test
     void testToString() {
-        DigitalSignature card = new DigitalSignature ("DOCTOR".getBytes());
-        String code = "DigitalSignature{" + "Digital Signature='" + Arrays.toString("DOCTOR".getBytes()) + '\'' + '}';
+        String signature = "Sign1";
+        String digSign1 = "DigitalSignature{" + "Digital Signature='" + new String(signature.getBytes(),StandardCharsets.UTF_8) + '\'' + '}';
 
-        assertEquals(code,card.toString());
+        DigitalSignature digSign2 = new DigitalSignature (signature.getBytes());
+
+        assertEquals(digSign1,digSign2.toString());
     }
 
     @Test
     void testHashCode() {
-        DigitalSignature sign1 = new DigitalSignature ("DOCTOR".getBytes());
-        DigitalSignature sign2 = new DigitalSignature ("DOCTOR".getBytes());
+        String signature1 = "Sign1";
+        String signatureR = "Sign1";
 
-        assertEquals(sign1.hashCode(), sign2.hashCode());
+        DigitalSignature digSign1 = new DigitalSignature (signature1.getBytes());
+        DigitalSignature digSign2 = new DigitalSignature (signatureR.getBytes());
+
+        assertEquals(digSign1.hashCode(), digSign2.hashCode());
     }
 
 }

@@ -1,5 +1,6 @@
 package data;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
@@ -28,6 +29,6 @@ final public class DigitalSignature {
 
     @Override
     public String toString() {
-        return "DigitalSignature{" + "Digital Signature='" + Arrays.toString(DSignature) + '\'' + '}';
+        return "DigitalSignature{" + "Digital Signature='" + new String(DSignature, StandardCharsets.UTF_8) + '\'' + '}';
     }
 }
