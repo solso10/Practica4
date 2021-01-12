@@ -36,7 +36,6 @@ public class PosologyTest {
         assertEquals(posology.getFreqUnit(), FqUnit.DAY);
         assertNotEquals(posology.getFreqUnit(), FqUnit.MONTH);
 
-
     }
 
     @Test
