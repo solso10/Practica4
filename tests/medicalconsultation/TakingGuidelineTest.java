@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TakingGuidelineTest {
 
-    public TakingGuideline guideline;
+    private TakingGuideline guideline;
 
     @BeforeEach
     void setUp() {
@@ -26,8 +26,8 @@ public class TakingGuidelineTest {
 
     @Test
     public void TestgetDuration(){
-        assertEquals(guideline.getDuration(),2);
-        assertNotEquals(guideline.getDuration(),4);
+        assertEquals(guideline.getDuration(),2f);
+        assertNotEquals(guideline.getDuration(),4f);
     }
 
 

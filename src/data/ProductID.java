@@ -44,6 +44,4 @@ final public class ProductID {
         return "ProductID{" + "product code='" + productID + '\'' + '}';
     }
 
-
-
 }

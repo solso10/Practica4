@@ -8,26 +8,26 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class PosologyTest {
 
-    public Posology posology;
+    private Posology posology;
 
     @BeforeEach
     void setUp() {
 
-        posology = new Posology(7,2,FqUnit.DAY);
+        posology = new Posology(7f,2f,FqUnit.DAY);
     }
 
     @Test
     public void TestgetDose() {
-        assertEquals(posology.getDose(), 7);
-        assertNotEquals(posology.getDose(), 6);
+        assertEquals(posology.getDose(), 7f);
+        assertNotEquals(posology.getDose(), 6f);
 
     }
 
     @Test
     public void TestgetFreq(){
 
-        assertEquals(posology.getFreq(), 2);
-        assertNotEquals(posology.getFreq(), 3);
+        assertEquals(posology.getFreq(), 2f);
+        assertNotEquals(posology.getFreq(), 3f);
 
     }
 
@@ -41,14 +41,14 @@ public class PosologyTest {
 
     @Test
     public void TestsetDose(){
-        float dose = 3;
+        float dose = 3f;
         posology.setDose(dose);
         assertEquals(posology.getDose(),dose);
     }
 
     @Test
     public void TestsetFreg(){
-        float freq = 3;
+        float freq = 3f;
         posology.setFreq(freq);
         assertEquals(posology.getFreq(),freq);
     }
