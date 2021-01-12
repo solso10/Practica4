@@ -13,21 +13,21 @@ public class PosologyTest {
     @BeforeEach
     void setUp() {
 
-        posology = new Posology(7,2,FqUnit.DAY);
+        posology = new Posology(7f,2f,FqUnit.DAY);
     }
 
     @Test
     public void TestgetDose() {
-        assertEquals(posology.getDose(), 7);
-        assertNotEquals(posology.getDose(), 6);
+        assertEquals(posology.getDose(), 7f);
+        assertNotEquals(posology.getDose(), 6f);
 
     }
 
     @Test
     public void TestgetFreq(){
 
-        assertEquals(posology.getFreq(), 2);
-        assertNotEquals(posology.getFreq(), 3);
+        assertEquals(posology.getFreq(), 2f);
+        assertNotEquals(posology.getFreq(), 3f);
 
     }
 
@@ -35,7 +35,6 @@ public class PosologyTest {
     public void TestgetFqUnit() {
         assertEquals(posology.getFreqUnit(), FqUnit.DAY);
         assertNotEquals(posology.getFreqUnit(), FqUnit.MONTH);
-
 
     }
 

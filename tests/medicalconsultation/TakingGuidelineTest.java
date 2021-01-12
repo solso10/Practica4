@@ -26,8 +26,8 @@ public class TakingGuidelineTest {
 
     @Test
     public void TestgetDuration(){
-        assertEquals(guideline.getDuration(),2);
-        assertNotEquals(guideline.getDuration(),4);
+        assertEquals(guideline.getDuration(),2f);
+        assertNotEquals(guideline.getDuration(),4f);
     }
 
 
