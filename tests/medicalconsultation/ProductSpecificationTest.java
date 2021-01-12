@@ -19,32 +19,42 @@ class ProductSpecificationTest{
     }
 
     @Test
-    void getUPCcode() {
+    void TestgetUPCcode() {
         assertEquals(specification.getUPCcode().getProductID(),"101");
         assertNotEquals(specification.getUPCcode().getProductID(),"404");
     }
 
-
-    void getPrice() {
-        assertEquals();
-        assertNotEquals();
+    @Test
+    void TestgetDescription(){
+        assertEquals(specification.getDescription(),"Frenadol: medicamento para el resfriado");
+        assertNotEquals(specification.getDescription(),"Ibuprofeno: medicamento para la fiebre");
     }
 
- /*   @Test
-    void setUPCcode() {
-        assertEquals();
-        assertNotEquals();
+
+    @Test
+    void TestgetPrice() {
+        assertEquals(specification.getPrice(),new BigDecimal(15));
+        assertNotEquals(specification.getPrice(), new BigDecimal(20));
     }
 
     @Test
-    void setDescription() {
-        assertEquals();
-        assertNotEquals();
+    void TestsetUPCcode() throws ProductIDException {
+        ProductID product = new ProductID("202");
+        specification.setUPCcode(product);
+        assertEquals(specification.getUPCcode(),product);
     }
 
     @Test
-    void setPrice() {
-        assertEquals();
-        assertNotEquals();
-    }*/
+    void TestsetDescription() {
+        String description =  "PharmalGrip: medicamento para la gripe";
+        specification.setDescription(description);
+        assertEquals(specification.getDescription(),description);
+    }
+
+    @Test
+    void TestsetPrice() {
+        BigDecimal price = new BigDecimal(200);
+        specification.setPrice(price);
+        assertEquals(specification.getPrice(),price);
+    }
 }

@@ -42,6 +42,7 @@ public class TakingGuidelineTest {
     public void TestsetdMoment(){
         dayMoment moment = dayMoment.AFTERLUNCH;
         guideline.setdMoment(moment);
+        assertEquals(guideline.getdMoment(),moment);
     }
 
     @Test
@@ -68,7 +69,7 @@ public class TakingGuidelineTest {
     @Test
     public void TestgetPosology(){
         Posology pos1 = new Posology(4f, 4f, FqUnit.MONTH);
-        Posology pos2 =new Posology(2f,6f, FqUnit.DAY);
+        Posology pos2 = new Posology(2f,6f, FqUnit.DAY);
 
         guideline.setPosology(pos1);
 
