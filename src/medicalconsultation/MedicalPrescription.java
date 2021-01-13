@@ -3,6 +3,7 @@ package medicalconsultation;
 import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
+import exceptions.IncorrectTakingGuidelinesException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,15 +28,38 @@ public class MedicalPrescription {
     }
 
 
-    public void addLine(ProductID prodID, String[] instruc)  {
+    public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
+        if (instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null){
+            throw new IncorrectTakingGuidelinesException("Linea mal escrita");
+        }
+        //prescriptionLines(String prodId, dayMoment dM, float du, String i, float d ,float f, FqUnit u)
 
+        try{
+            dayMoment dM = dayMoment.valueOf(instruc[0]);
+            float du = Float.parseFloat(instruc[1]);
+            float d = Float.parseFloat(instruc[3]);
+            float f = Float.parseFloat(instruc[4]);
+            FqUnit u = FqUnit.valueOf(instruc[5]);
+            prescriptionLines.add(new MedicalPrescriptionLine(prodID,dM, du, instruc[2], d, f, u));
+
+        }catch (Exception e){
+            throw new IncorrectTakingGuidelinesException("");
+        }
+   }
+
+
+    public void modifyLine(ProductID prodID, String[] instruc) {
 
     }
-//
-//    public void modifyLine(ProductID prodID, String[] instruc) { . . . }
-//throws ProductNotInPrescription, IncorrectTakingGuidelinesException;
-//
-//    public void removeLine(ProductID prodID) { . . . } throws ProductNotInPrescription;
+    throws ProductNotInPrescription, IncorrectTakingGuidelinesException;
+
+
+
+
+    public void removeLine(ProductID prodID) {
+
+    }
+    throws ProductNotInPrescription;
 //
 
 

@@ -1,5 +1,6 @@
 package medicalconsultation;
 
+import data.ProductID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ class MedicalPrescriptionLineTest {
 
     @Test
     public void setProdId() {
-        String productID =  "1010115";
+        ProductID productID =  "1010115";
         prescriptionline.setProdId(productID);
         assertEquals(prescriptionline.getProdId(),productID);
     }
