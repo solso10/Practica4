@@ -14,8 +14,8 @@ public class MedicalPrenscriptioTest {
     MedicalPrescription mp;
 
     @BeforeEach
-    void setUp(){
-        mp = new MedicalPrescription("1010115", dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
+    void setUp() throws ProductIDException{
+        mp = new MedicalPrescription(new ProductID("1010115"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
     }
 
     public void addlinetest() throws ProductIDException, IncorrectTakingGuidelinesException {

@@ -1,6 +1,7 @@
 package medicalconsultation;
 
 import data.ProductID;
+import exceptions.ProductIDException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,20 +12,20 @@ class MedicalPrescriptionLineTest {
     private  MedicalPrescriptionLine prescriptionline;
 
     @BeforeEach
-    void setUp(){
-        prescriptionline = new MedicalPrescriptionLine("1010115", dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
+    void setUp() throws ProductIDException {
+        prescriptionline = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
 
     }
 
     @Test
-    public void getProdId() {
-        assertEquals(prescriptionline.getProdId(),"1010115");
+    public void getProdId() throws ProductIDException{
+        assertEquals(prescriptionline.getProdId(),new ProductID("1010115"));
         assertNotEquals(prescriptionline.getProdId(),"2002347");
     }
 
     @Test
-    public void setProdId() {
-        ProductID productID =  "1010115";
+    public void setProdId() throws ProductIDException {
+        ProductID productID =  new ProductID("1010115");
         prescriptionline.setProdId(productID);
         assertEquals(prescriptionline.getProdId(),productID);
     }
