@@ -27,6 +27,11 @@ public class MedicalPrescription {
         this.eSign = eSign;
     }
 
+    public MedicalPrescription(int prodId, ArrayList<MedicalPrescriptionLine> prescriptionLines) {
+        this.prodId = prodId;
+        this.prescriptionLines = prescriptionLines;
+    }
+
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
         if (instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null){
@@ -51,7 +56,7 @@ public class MedicalPrescription {
     public void modifyLine(ProductID prodID, String[] instruc) {
 
     }
-    throws ProductNotInPrescription, IncorrectTakingGuidelinesException;
+    throws IncorrectTakingGuidelinesException;
 
 
 
@@ -93,5 +98,13 @@ public class MedicalPrescription {
 
     public void seteSign(DigitalSignature eSign) {
         this.eSign = eSign;
+    }
+
+    public ArrayList<MedicalPrescriptionLine> getPrescriptionLines() {
+        return prescriptionLines;
+    }
+
+    public void setPrescriptionLines(ArrayList<MedicalPrescriptionLine> prescriptionLines) {
+        this.prescriptionLines = prescriptionLines;
     }
 }
