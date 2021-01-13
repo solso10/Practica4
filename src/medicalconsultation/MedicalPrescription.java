@@ -8,9 +8,12 @@ import exceptions.IncorrectTakingGuidelinesException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MedicalPrescription {
+public class MedicalPrescription<ProductNotInPrescription> {
 
     private int prescCode;
+
+
+
     private Date prescDate;
     private Date endDate;
     private HealthCardID hcID;
@@ -30,6 +33,9 @@ public class MedicalPrescription {
     public MedicalPrescription(int prodId, ArrayList<MedicalPrescriptionLine> prescriptionLines) {
         this.prodId = prodId;
         this.prescriptionLines = prescriptionLines;
+    }
+
+    public MedicalPrescription(int i, Date date, Date date1, HealthCardID hcID, DigitalSignature sign, ArrayList<MedicalPrescriptionLine> lines) {
     }
 
 
@@ -75,6 +81,10 @@ public class MedicalPrescription {
     public void setPrescCode(int prescCode) {
         this.prescCode = prescCode;
     }
+
+    public Date getPrescDate() { return prescDate; }
+
+    public void setPrescDate(Date prescDate) { this.prescDate = prescDate; }
 
     public Date getEndDate() {
         return endDate;
