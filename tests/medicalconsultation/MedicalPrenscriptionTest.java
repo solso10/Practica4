@@ -15,6 +15,8 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MedicalPrenscriptionTest {
 
@@ -33,41 +35,62 @@ public class MedicalPrenscriptionTest {
         // guideline = new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
 
     }
-     void initPresc() throws ProductIDException {
-            hcID = new HealthCardID("ABCD1234567890");
-            signature = new DigitalSignature("DOCTOR".getBytes());
-            mpline = new MedicalPrescriptionLine(new ProductID("12345"),dayMoment.DURINGDINNER,4f,"medicamento para el colesterol",2f,4f,FqUnit.HOUR);
+//     void initPresc() throws ProductIDException {
+//            hcID = new HealthCardID("ABCD1234567890");
+//            signature = new DigitalSignature("DOCTOR".getBytes());
+//            mpline = new MedicalPrescriptionLine(new ProductID("12345"),dayMoment.DURINGDINNER,4f,"medicamento para el colesterol",2f,4f,FqUnit.HOUR);
+//
+//    }
+
+
+
+    @Test
+    void setPrescriptionLinesTest() throws ProductIDException{
+
+        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        mpl1.add(mpl11);
+        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
+        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
+        mpl2.add(mpl21);
+
+        prescription.setPrescriptionLines(mpl1);
+
+        assertEquals(prescription.getPrescriptionLines(),mpl1);
+
+        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
+        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
+
+        mpl1.add(mpl21);
+        assertTrue(prescription.getPrescriptionLines().contains(mpl21));
+
+        mpl2.add(mpl11);
+        prescription.setPrescriptionLines(mpl2);
+        assertEquals(prescription.getPrescriptionLines(),mpl2);
 
     }
 
-
-
     @Test
-    void setPrescriptionLines() throws  ProductIDException{
+    void getPrescriptionLinesTest() throws ProductIDException {
+        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        mpl1.add(mpl11);
+        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
+        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
+        mpl2.add(mpl21);
 
-        ProductID productID =  new ProductID("1010115");
-        prescription.setPrescriptionLines(productID);
-        assertEquals(prescription.getPrescriptionLines(),productID);
+        prescription.setPrescriptionLines(mpl1);
 
-        TakingGuideline tkg =  new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
-        prescription.setPrescriptionLines(tkg);
-        assertEquals(prescription.getPrescriptionLines(),tkg);
-    }
-
-    @Test
-    void getPrescriptionLines() throws ProductIDException {
-        assertEquals(prescription.getPrescriptionLines(), new ProductID("12345"));
-        assertNotEquals(prescription.getPrescriptionLines(),new ProductID("34567"));
-        TakingGuideline tkg1 = new TakingGuideline(dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
-        TakingGuideline tkg2 = new TakingGuideline(dayMoment.DURINGBREAKFAST,6f,"medicamento para el dolor de estomago", 10f, 2f, FqUnit.MONTH);
-        prescription.setPrescriptionLines(tkg1);
-
-        assertEquals(prescription.getPrescriptionLines(), tkg1);
-        assertNotEquals(prescription.getPrescriptionLines(), tkg2);
+        assertEquals(prescription.getPrescriptionLines(),mpl1);
+        assertNotEquals(prescription.getPrescriptionLines(),mpl2);
+        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
+        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
     }
 
     @Test
     void getPresCode(){
+        prescription.setPrescCode(666);
+
         assertEquals(666, prescription.getPrescCode());
         assertNotEquals(345, prescription.getPrescCode());
     }
@@ -75,59 +98,111 @@ public class MedicalPrenscriptionTest {
     @Test
     void setPrescCode(){
         prescription.setPrescCode(765);
+
         assertEquals(765,prescription.getPrescCode());
+        assertNotEquals(7,prescription.getPrescCode());
     }
 
     @Test
     void getPrescDate(){
-        assertEquals(new Date(2021, 7, 2), prescription.getPrescDate());
-        assertNotEquals(new Date(2000, 5, 27), prescription.getPrescDate());
+        Date date1 = new Date(2021, 7, 2);
+        Date date2 = new Date(2000, 5, 27);
+
+        prescription.setPrescDate(date1);
+        assertEquals(prescription.getPrescDate(), date1);
+        assertNotEquals(prescription.getEndDate(), date2);
+        prescription.setPrescDate(date2);
+        assertEquals(prescription.getPrescDate(), date2);
+        assertNotEquals(prescription.getEndDate(), date1);
     }
 
     @Test
     void setPrescDate(){
-        Date firstDate = new Date(2021, 7, 2);
-        prescription.setPrescDate(firstDate);
-        assertEquals(firstDate, prescription.getPrescCode());
+        Date date1 = new Date(2021, 7, 2);
+        Date date2 = new Date(2000, 5, 27);
+
+        prescription.setPrescDate(date1);
+        assertEquals(prescription.getPrescDate(), date1);
+        assertNotEquals(prescription.getEndDate(), date2);
     }
 
     @Test
     void getEndDate(){
-        assertEquals(new Date(2022, 6,20),prescription.getEndDate());
-        assertNotEquals(new Date(2023, 8,30), prescription.getEndDate());
+        Date date1 = new Date(2022, 2, 21);
+        Date date2 = new Date(2004, 8, 1);
+
+        prescription.setEndDate(date1);
+
+        assertEquals(prescription.getEndDate(), date1);
+        assertNotEquals(prescription.getEndDate(), date2);
     }
 
     @Test
     void setEndDate(){
-        Date finalDate = new Date(2022, 6, 20);
-        prescription.setEndDate(finalDate);
-        assertEquals(finalDate, prescription.getEndDate());
+        Date date1 = new Date(2022, 2, 21);
+        Date date2 = new Date(2004, 8, 1);
+
+        prescription.setEndDate(date1);
+        assertEquals(prescription.getEndDate(), date1);
+        assertNotEquals(prescription.getEndDate(), date2);
+
+        prescription.setEndDate(date2);
+        assertEquals(prescription.getEndDate(), date2);
+        assertNotEquals(prescription.getEndDate(), date1);
     }
 
     @Test
     void getHcID(){
-        assertEquals(prescription.getHcID(), "ABCD1234567890");
-        assertNotEquals(prescription.getHcID(), "QWER1234567890");
+        HealthCardID healthcard1 = new HealthCardID("ASDF1234567890");
+        HealthCardID healthcard2 = new HealthCardID("QWER1234567890");
+
+        prescription.setHcID(healthcard1);
+
+        assertEquals(prescription.getHcID(), healthcard1);
+        assertNotEquals(prescription.getHcID(), healthcard2);
     }
 
     @Test
     void setHcID(){
-        HealthCardID healthcard = new HealthCardID("ASDF1234567890");
-        prescription.setHcID(healthcard);
-        assertEquals(healthcard, prescription.getHcID());
-    }
+        HealthCardID healthcard1 = new HealthCardID("ASDF1234567890");
+        HealthCardID healthcard2 = new HealthCardID("QWER1234567890");
 
-    @Test
-    void geteSign(){
-        assertEquals(prescription.geteSign(), "DOCTOR");
-        assertNotEquals(prescription.geteSign(),"DR");
+        prescription.setHcID(healthcard1);
+
+        assertEquals(prescription.getHcID(), healthcard1);
+        assertNotEquals(prescription.getHcID(), healthcard2);
+
+        prescription.setHcID(healthcard2);
+
+        assertEquals(prescription.getHcID(), healthcard2);
+        assertNotEquals(prescription.getHcID(), healthcard1);
     }
 
     @Test
     void seteSign(){
-        DigitalSignature digSign = new DigitalSignature("DOCTORA".getBytes());
-        prescription.seteSign(digSign);
-        assertEquals(digSign, prescription.geteSign());
+        DigitalSignature digSign1 = new DigitalSignature("DR".getBytes());
+        DigitalSignature digSign2 = new DigitalSignature("RD".getBytes());
+
+        prescription.seteSign(digSign1);
+
+        assertEquals(prescription.geteSign(), digSign1);
+        assertNotEquals(prescription.geteSign(), digSign2);
+
+        prescription.seteSign(digSign2);
+
+        assertEquals(prescription.geteSign(), digSign2);
+        assertNotEquals(prescription.geteSign(), digSign1);
+    }
+
+    @Test
+    void geteSign(){
+        DigitalSignature digSign1 = new DigitalSignature("DR".getBytes());
+        DigitalSignature digSign2 = new DigitalSignature("RD".getBytes());
+
+        prescription.seteSign(digSign1);
+
+        assertEquals(prescription.geteSign(), digSign1);
+        assertNotEquals(prescription.geteSign(), digSign2);
     }
 
 

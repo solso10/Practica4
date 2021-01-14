@@ -19,7 +19,7 @@ public class MedicalPrescription<ProductNotInPrescription> {
     private HealthCardID hcID;
     private DigitalSignature eSign;
 
-    private int prodId;
+    private ProductID prodId;
     private ArrayList<MedicalPrescriptionLine> prescriptionLines;
 
     public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign) {
@@ -30,7 +30,7 @@ public class MedicalPrescription<ProductNotInPrescription> {
         this.eSign = eSign;
     }
 
-    public MedicalPrescription(int prodId, ArrayList<MedicalPrescriptionLine> prescriptionLines) {
+    public MedicalPrescription(ProductID prodId, ArrayList<MedicalPrescriptionLine> prescriptionLines) {
         this.prodId = prodId;
         this.prescriptionLines = prescriptionLines;
     }
@@ -62,7 +62,7 @@ public class MedicalPrescription<ProductNotInPrescription> {
     public void modifyLine(ProductID prodID, String[] instruc) {
 
     }
-    throws IncorrectTakingGuidelinesException;
+//    throws IncorrectTakingGuidelinesException;
 
 
 
@@ -70,7 +70,7 @@ public class MedicalPrescription<ProductNotInPrescription> {
     public void removeLine(ProductID prodID) {
 
     }
-    throws ProductNotInPrescription;
+//    throws ProductNotInPrescription;
 //
 
 
