@@ -57,7 +57,63 @@ public class MedicalPrescription {
 
     public void modifyLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException {
 
+        if (instruc.length != 6 || instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null || instruc[5] == null){
+            throw new IncorrectTakingGuidelinesException("Linea mal escrita");
+        }
 
+        dayMoment dM;
+        String msg;
+        float du, d, f;
+        FqUnit u;
+
+        try {
+
+            for(int i = 0; i < prescriptionLines.size(); i++){
+                if(prescriptionLines.get(i).getProdId().equals(prodID)){
+                    if(!instruc[0].isEmpty()){
+                        dM = dayMoment.getdayMoment(instruc[0]);
+                    } else {
+                        dM = prescriptionLines.get(i).getTguide().getdMoment();
+                    }
+
+                    if(!instruc[1].isEmpty()){
+                        du = Float.parseFloat(instruc[1]);
+                    } else {
+                        du = prescriptionLines.get(i).getTguide().getDuration();
+                    }
+
+                    if(!instruc[2].isEmpty()){
+                        msg = instruc[2];
+                    } else {
+                        msg = prescriptionLines.get(i).getTguide().getInstructions();
+                    }
+
+                    if(!instruc[3].isEmpty()){
+                        d = Float.parseFloat(instruc[3]);
+                    } else {
+                        d = prescriptionLines.get(i).getTguide().getPosology().getDose();
+                    }
+
+                    if(!instruc[4].isEmpty()){
+                        f = Float.parseFloat(instruc[4]);
+                    } else {
+                        f = prescriptionLines.get(i).getTguide().getPosology().getFreq();
+                    }
+
+                    if(!instruc[5].isEmpty()){
+                        u = FqUnit.getFqUnit(instruc[5]);
+                    } else {
+                        u = prescriptionLines.get(i).getTguide().getPosology().getFreqUnit();
+                    }
+
+                    prescriptionLines.set(i, new MedicalPrescriptionLine(prodID, dM, du, msg, d, f, u));
+                }
+            }
+
+
+        } catch (Exception e){
+            throw new IncorrectTakingGuidelinesException("Error");
+        }
     }
 
 
@@ -65,6 +121,23 @@ public class MedicalPrescription {
 
 
     public void removeLine(ProductID prodID) throws ProductNotInPrescription {
+
+
+        int count = 0;
+        int prescriptionSize = prescriptionLines.size();
+
+        for(int i = 0; i < prescriptionSize; i++) {
+
+            if (prescriptionLines.get(i).getProdId().equals(prodID)){
+                prescriptionLines.remove(i);
+            } else {
+                count += 1;
+            }
+
+        }
+
+        if(count == prescriptionSize) throw new ProductNotInPrescription("NO EXISTE");
+
 
     }
 
