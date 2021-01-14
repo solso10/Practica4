@@ -3,6 +3,7 @@ package medicalconsultation;
 import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
+import exceptions.HealthCardException;
 import exceptions.IncorrectTakingGuidelinesException;
 import exceptions.ProductIDException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +21,49 @@ public class MedicalPrenscriptionTest {
     MedicalPrescription prescription;
     TakingGuideline guideline;
     private HealthCardID hcID;
-    private DigitalSignature sign;
+    private DigitalSignature signature;
     private ArrayList<MedicalPrescriptionLine> lines;
+    MedicalPrescriptionLine mpline;
+
+
     @BeforeEach
     void setUp() {
-        prescription = new MedicalPrescription(666, new Date(2021, 7, 2), new Date(2022, 6, 20), hcID, sign, lines);
+        prescription = new MedicalPrescription(666, new Date(2021, 7, 2), new Date(2022, 6, 20), hcID, signature, lines);
         //prescription = new MedicalPrescription(new ProductID("1010115"),
-       // guideline = new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
+        // guideline = new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
+
+    }
+     void initPresc() throws ProductIDException {
+            hcID = new HealthCardID("ABCD1234567890");
+            signature = new DigitalSignature("DOCTOR".getBytes());
+            mpline = new MedicalPrescriptionLine(new ProductID("12345"),dayMoment.DURINGDINNER,4f,"medicamento para el colesterol",2f,4f,FqUnit.HOUR);
+
+    }
+
+
+
+    @Test
+    void setPrescriptionLines() throws  ProductIDException{
+
+        ProductID productID =  new ProductID("1010115");
+        prescription.setPrescriptionLines(productID);
+        assertEquals(prescription.getPrescriptionLines(),productID);
+
+        TakingGuideline tkg =  new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
+        prescription.setPrescriptionLines(tkg);
+        assertEquals(prescription.getPrescriptionLines(),tkg);
+    }
+
+    @Test
+    void getPrescriptionLines() throws ProductIDException {
+        assertEquals(prescription.getPrescriptionLines(), new ProductID("12345"));
+        assertNotEquals(prescription.getPrescriptionLines(),new ProductID("34567"));
+        TakingGuideline tkg1 = new TakingGuideline(dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        TakingGuideline tkg2 = new TakingGuideline(dayMoment.DURINGBREAKFAST,6f,"medicamento para el dolor de estomago", 10f, 2f, FqUnit.MONTH);
+        prescription.setPrescriptionLines(tkg1);
+
+        assertEquals(prescription.getPrescriptionLines(), tkg1);
+        assertNotEquals(prescription.getPrescriptionLines(), tkg2);
     }
 
     @Test
@@ -69,8 +106,30 @@ public class MedicalPrenscriptionTest {
 
     @Test
     void getHcID(){
-
+        assertEquals(prescription.getHcID(), "ABCD1234567890");
+        assertNotEquals(prescription.getHcID(), "QWER1234567890");
     }
+
+    @Test
+    void setHcID(){
+        HealthCardID healthcard = new HealthCardID("ASDF1234567890");
+        prescription.setHcID(healthcard);
+        assertEquals(healthcard, prescription.getHcID());
+    }
+
+    @Test
+    void geteSign(){
+        assertEquals(prescription.geteSign(), "DOCTOR");
+        assertNotEquals(prescription.geteSign(),"DR");
+    }
+
+    @Test
+    void seteSign(){
+        DigitalSignature digSign = new DigitalSignature("DOCTORA".getBytes());
+        prescription.seteSign(digSign);
+        assertEquals(digSign, prescription.geteSign());
+    }
+
 
   /*  @Test
     public void addlinetest() throws ProductIDException, IncorrectTakingGuidelinesException {

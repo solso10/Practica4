@@ -13,8 +13,7 @@ final public class HealthCardID {
     public HealthCardID(String code) {
         Objects.requireNonNull(code, "El código no puede ser null");
         if (code.isEmpty()){ throw new IllegalArgumentException("El código no puede ser vacío");}
-        if (!isValid(code)){ throw new IllegalArgumentException("El código debe estar formado por 14 dígitos: " +
-                "4 letras y 10 numeros");}
+        if (!isValid(code)){ throw new IllegalArgumentException("El código debe estar formado por 14 dígitos: " + "4 letras y 10 numeros");}
         else {
             this.personalID = code;
         }
