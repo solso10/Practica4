@@ -20,7 +20,7 @@ public interface HealthNationalService {
             throws AnyKeyWordMedicineException, ConnectException;
     ProductSpecification getProductSpecific(int opt)
             throws AnyMedicineSearchException, ConnectException;
-//    MedicalPrescription6 sendePrescription(MedicalPrescription7 ePresc)
-//            throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription;
+    MedicalPrescription sendePrescription(MedicalPrescription ePresc)
+            throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription;
 
 }
