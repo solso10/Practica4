@@ -18,18 +18,7 @@ public class MedicalPrescription {
     private DigitalSignature eSign;
     private ArrayList<MedicalPrescriptionLine> prescriptionLines;
 
-    public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign) {
-        this.prescCode = prescCode;
-        this.prescDate = prescDate;
-        this.endDate = endDate;
-        this.hcID = hcID;
-        this.eSign = eSign;
-    }
 
-    public MedicalPrescription(HealthCardID hcID) {
-        this.hcID = hcID;
-        this.prescriptionLines = new ArrayList<>();
-    }
 
     public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign, ArrayList<MedicalPrescriptionLine> lines) {
         this.prescCode = prescCode;
@@ -42,21 +31,26 @@ public class MedicalPrescription {
 
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
-        if (instruc.length != 6 || instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null){
+        if (instruc.length != 6 || instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null || instruc[5] == null){
             throw new IncorrectTakingGuidelinesException("Linea mal escrita");
         }
-        //prescriptionLines(String prodId, dayMoment dM, float du, String i, float d ,float f, FqUnit u)
+
+        if (instruc[0].isEmpty() || instruc[1].isEmpty()|| instruc[2].isEmpty()|| instruc[3].isEmpty()|| instruc[4].isEmpty() || instruc[5].isEmpty()){
+            throw new IncorrectTakingGuidelinesException("Linea mal escrita");
+        }
 
         try{
-            dayMoment dM = dayMoment.valueOf(instruc[0]);
+
+            dayMoment dM = dayMoment.getdayMoment(instruc[0]);
             float du = Float.parseFloat(instruc[1]);
             float d = Float.parseFloat(instruc[3]);
             float f = Float.parseFloat(instruc[4]);
-            FqUnit u = FqUnit.valueOf(instruc[5]);
-            prescriptionLines.add(new MedicalPrescriptionLine(prodID,dM, du, instruc[2], d, f, u));
+            FqUnit u = FqUnit.getFqUnit(instruc[5]);
+
+            prescriptionLines.add(new MedicalPrescriptionLine(prodID, dM, du, instruc[2], d, f, u));
 
         }catch (Exception e){
-            throw new IncorrectTakingGuidelinesException("");
+            throw new IncorrectTakingGuidelinesException("Error");
         }
    }
 

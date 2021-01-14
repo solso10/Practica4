@@ -3,20 +3,19 @@ package medicalconsultation;
 import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
-import exceptions.HealthCardException;
 import exceptions.IncorrectTakingGuidelinesException;
 import exceptions.ProductIDException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MedicalPrenscriptionTest {
 
@@ -24,7 +23,7 @@ public class MedicalPrenscriptionTest {
     private TakingGuideline guideline;
     private HealthCardID hcID;
     private DigitalSignature signature;
-    private ArrayList<MedicalPrescriptionLine> lines;
+    private ArrayList<MedicalPrescriptionLine> lines = new ArrayList<>();
     private MedicalPrescriptionLine mpline;
     private Object ProductID;
 
@@ -202,22 +201,26 @@ public class MedicalPrenscriptionTest {
     public void addlinetest() throws ProductIDException, IncorrectTakingGuidelinesException {
         //dayMoment dM, float du, String i, float d ,float f, FqUnit u)
 
-        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.AFTERBREAKFAST,2f,"medicamento para  el dolor de cabeza", 2f, 4f, FqUnit.DAY);
 
-         ProductID prodID = new ProductID("1010115");
-         String[] array1 = new String[]{"AFTERBREACKFAST", "2","medicamento para  el dolor de cabeza","2","4", "DAY"};
-         String[] array2 = new String[]{"1234", "","222","FA2","4AA",""};
-         String[] array3 = new String[]{"A","44AA","A2QQ","QQW"};
-         String[] array4 = new String[]{"AFTERBREACKFAST","2","4", "DAY"};
-         String[] array5 = new String[]{"", "2","3","2","4", "DAY"};
+        ProductID prodID = new ProductID("1010115");
+        String[] array1 = new String[]{"AFTERBREAKFAST", "2","medicamento para  el dolor de cabeza","2","4", "DAY"};
+        String[] array2 = new String[]{"1234", "","222","FA2","4AA",""};
+        String[] array3 = new String[]{"A","44AA","A2QQ","QQW"};
+        String[] array4 = new String[]{"AFTERBREAKFAST","2","4", "DAY"};
+        String[] array5 = new String[]{"", "2","3","2","4", "DAY"};
+        String[] array6 = new String[]{};
 
-         prescription.addLine(prodID,array1);
-      /*   prescription.addLine(prodID,array2);
-         prescription.addLine(prodID,array3);
-         prescription.addLine(prodID,array4);
-         prescription.addLine(prodID,array5);*/
+        prescription.addLine(prodID,array1);
+        
+        assertEquals(mpl11.getProdId(), prescription.getPrescriptionLines().get(0).getProdId());
+        assertEquals(mpl11.getTguide().getInstructions(), prescription.getPrescriptionLines().get(0).getTguide().getInstructions());
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {prescription.addLine(prodID, array2);});
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {prescription.addLine(prodID, array3);});
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {prescription.addLine(prodID, array4);});
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {prescription.addLine(prodID, array5);});
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {prescription.addLine(prodID, array6);});
 
-        assertEquals(mpl11, prescription.getPrescriptionLines(ProductID));
     }
 
 }
