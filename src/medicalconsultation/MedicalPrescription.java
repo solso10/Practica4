@@ -4,22 +4,18 @@ import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
 import exceptions.IncorrectTakingGuidelinesException;
+import exceptions.ProductNotInPrescription;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MedicalPrescription<ProductNotInPrescription> {
+public class MedicalPrescription {
 
     private int prescCode;
-
-
-
     private Date prescDate;
     private Date endDate;
     private HealthCardID hcID;
     private DigitalSignature eSign;
-
-    private ProductID prodId;
     private ArrayList<MedicalPrescriptionLine> prescriptionLines;
 
     public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign) {
@@ -30,17 +26,23 @@ public class MedicalPrescription<ProductNotInPrescription> {
         this.eSign = eSign;
     }
 
-    public MedicalPrescription(ProductID prodId, ArrayList<MedicalPrescriptionLine> prescriptionLines) {
-        this.prodId = prodId;
-        this.prescriptionLines = prescriptionLines;
+    public MedicalPrescription(HealthCardID hcID) {
+        this.hcID = hcID;
+        this.prescriptionLines = new ArrayList<>();
     }
 
-    public MedicalPrescription(int i, Date date, Date date1, HealthCardID hcID, DigitalSignature sign, ArrayList<MedicalPrescriptionLine> lines) {
+    public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign, ArrayList<MedicalPrescriptionLine> lines) {
+        this.prescCode = prescCode;
+        this.prescDate = prescDate;
+        this.endDate = endDate;
+        this.hcID = hcID;
+        this.eSign = eSign;
+        this.prescriptionLines = lines;
     }
 
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
-        if (instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null){
+        if (instruc.length != 6 || instruc[0] == null || instruc[1] == null || instruc[2] == null || instruc[3] == null || instruc[4] == null){
             throw new IncorrectTakingGuidelinesException("Linea mal escrita");
         }
         //prescriptionLines(String prodId, dayMoment dM, float du, String i, float d ,float f, FqUnit u)
@@ -59,62 +61,42 @@ public class MedicalPrescription<ProductNotInPrescription> {
    }
 
 
-    public void modifyLine(ProductID prodID, String[] instruc) {
+    public void modifyLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException {
+
 
     }
-//    throws IncorrectTakingGuidelinesException;
 
 
 
 
-    public void removeLine(ProductID prodID) {
+
+    public void removeLine(ProductID prodID) throws ProductNotInPrescription {
 
     }
-//    throws ProductNotInPrescription;
-//
 
 
-    public int getPrescCode() {
-        return prescCode;
-    }
 
-    public void setPrescCode(int prescCode) {
-        this.prescCode = prescCode;
-    }
+    public int getPrescCode() { return prescCode; }
+
+    public void setPrescCode(int prescCode) { this.prescCode = prescCode; }
 
     public Date getPrescDate() { return prescDate; }
 
     public void setPrescDate(Date prescDate) { this.prescDate = prescDate; }
 
-    public Date getEndDate() {
-        return endDate;
-    }
+    public Date getEndDate() { return endDate; }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+    public void setEndDate(Date endDate) { this.endDate = endDate; }
 
-    public HealthCardID getHcID() {
-        return hcID;
-    }
+    public HealthCardID getHcID() { return hcID; }
 
-    public void setHcID(HealthCardID hcID) {
-        this.hcID = hcID;
-    }
+    public void setHcID(HealthCardID hcID) { this.hcID = hcID; }
 
-    public DigitalSignature geteSign() {
-        return eSign;
-    }
+    public DigitalSignature geteSign() { return eSign; }
 
-    public void seteSign(DigitalSignature eSign) {
-        this.eSign = eSign;
-    }
+    public void seteSign(DigitalSignature eSign) { this.eSign = eSign; }
 
-    public ArrayList<MedicalPrescriptionLine> getPrescriptionLines() {
-        return prescriptionLines;
-    }
+    public ArrayList<MedicalPrescriptionLine> getPrescriptionLines() { return prescriptionLines; }
 
-    public void setPrescriptionLines(ArrayList<MedicalPrescriptionLine> prescriptionLines) {
-        this.prescriptionLines = prescriptionLines;
-    }
+    public void setPrescriptionLines(ArrayList<MedicalPrescriptionLine> prescriptionLines) { this.prescriptionLines = prescriptionLines; }
 }

@@ -20,72 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MedicalPrenscriptionTest {
 
-    MedicalPrescription prescription;
-    TakingGuideline guideline;
+    private MedicalPrescription prescription;
+    private TakingGuideline guideline;
     private HealthCardID hcID;
     private DigitalSignature signature;
     private ArrayList<MedicalPrescriptionLine> lines;
-    MedicalPrescriptionLine mpline;
+    private MedicalPrescriptionLine mpline;
+    private Object ProductID;
 
 
     @BeforeEach
     void setUp() {
         prescription = new MedicalPrescription(666, new Date(2021, 7, 2), new Date(2022, 6, 20), hcID, signature, lines);
-        //prescription = new MedicalPrescription(new ProductID("1010115"),
-        // guideline = new TakingGuideline(dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza",2f,4f, FqUnit.DAY);
-
-    }
-//     void initPresc() throws ProductIDException {
-//            hcID = new HealthCardID("ABCD1234567890");
-//            signature = new DigitalSignature("DOCTOR".getBytes());
-//            mpline = new MedicalPrescriptionLine(new ProductID("12345"),dayMoment.DURINGDINNER,4f,"medicamento para el colesterol",2f,4f,FqUnit.HOUR);
-//
-//    }
-
-
-
-    @Test
-    void setPrescriptionLinesTest() throws ProductIDException{
-
-        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
-        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
-        mpl1.add(mpl11);
-        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
-        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
-        mpl2.add(mpl21);
-
-        prescription.setPrescriptionLines(mpl1);
-
-        assertEquals(prescription.getPrescriptionLines(),mpl1);
-
-        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
-        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
-
-        mpl1.add(mpl21);
-        assertTrue(prescription.getPrescriptionLines().contains(mpl21));
-
-        mpl2.add(mpl11);
-        prescription.setPrescriptionLines(mpl2);
-        assertEquals(prescription.getPrescriptionLines(),mpl2);
-
     }
 
-    @Test
-    void getPrescriptionLinesTest() throws ProductIDException {
-        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
-        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
-        mpl1.add(mpl11);
-        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
-        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
-        mpl2.add(mpl21);
-
-        prescription.setPrescriptionLines(mpl1);
-
-        assertEquals(prescription.getPrescriptionLines(),mpl1);
-        assertNotEquals(prescription.getPrescriptionLines(),mpl2);
-        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
-        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
-    }
 
     @Test
     void getPresCode(){
@@ -206,23 +154,71 @@ public class MedicalPrenscriptionTest {
     }
 
 
-  /*  @Test
+    @Test
+    void setPrescriptionLinesTest() throws ProductIDException{
+
+        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        mpl1.add(mpl11);
+        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
+        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
+        mpl2.add(mpl21);
+
+        prescription.setPrescriptionLines(mpl1);
+
+        assertEquals(prescription.getPrescriptionLines(),mpl1);
+
+        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
+        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
+
+        mpl1.add(mpl21);
+        assertTrue(prescription.getPrescriptionLines().contains(mpl21));
+
+        mpl2.add(mpl11);
+        prescription.setPrescriptionLines(mpl2);
+        assertEquals(prescription.getPrescriptionLines(),mpl2);
+
+    }
+
+    @Test
+    void getPrescriptionLinesTest() throws ProductIDException {
+        ArrayList<MedicalPrescriptionLine> mpl1 = new ArrayList<>();
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+        mpl1.add(mpl11);
+        ArrayList<MedicalPrescriptionLine> mpl2 = new ArrayList<>();
+        MedicalPrescriptionLine mpl21 = new MedicalPrescriptionLine(new ProductID("2233445"), dayMoment.DURINGDINNER, 4f, "medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
+        mpl2.add(mpl21);
+
+        prescription.setPrescriptionLines(mpl1);
+
+        assertEquals(prescription.getPrescriptionLines(),mpl1);
+        assertNotEquals(prescription.getPrescriptionLines(),mpl2);
+        assertTrue(prescription.getPrescriptionLines().contains(mpl11));
+        assertFalse(prescription.getPrescriptionLines().contains(mpl21));
+    }
+
+
+    @Test
     public void addlinetest() throws ProductIDException, IncorrectTakingGuidelinesException {
         //dayMoment dM, float du, String i, float d ,float f, FqUnit u)
+
+        MedicalPrescriptionLine mpl11 = new MedicalPrescriptionLine(new ProductID("1010115"), dayMoment.DURINGDINNER,4f,"medicamento para el colesterol", 2f, 4f, FqUnit.HOUR);
+
          ProductID prodID = new ProductID("1010115");
          String[] array1 = new String[]{"AFTERBREACKFAST", "2","medicamento para  el dolor de cabeza","2","4", "DAY"};
          String[] array2 = new String[]{"1234", "","222","FA2","4AA",""};
          String[] array3 = new String[]{"A","44AA","A2QQ","QQW"};
          String[] array4 = new String[]{"AFTERBREACKFAST","2","4", "DAY"};
-         String[] array5 = new String[]{"", "2",,"2","4", "DAY"};
+         String[] array5 = new String[]{"", "2","3","2","4", "DAY"};
 
          prescription.addLine(prodID,array1);
-         prescription.addLine(prodID,array2);
+      /*   prescription.addLine(prodID,array2);
          prescription.addLine(prodID,array3);
          prescription.addLine(prodID,array4);
-         prescription.addLine(prodID,array5);
+         prescription.addLine(prodID,array5);*/
 
-        assertEquals(prescription, prescription.addLine(ProductID);    }
-*/
+        assertEquals(mpl11, prescription.getPrescriptionLines(ProductID));
+    }
+
 }
 
