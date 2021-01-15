@@ -15,11 +15,11 @@ public class ScheduledVisitAgendaClass implements ScheduledVisitAgenda{
     private final int month = today.getMonth();
     private final int day = today.getDay();
 
-    public class ScheduledVisitAgendaClass(){
-        public HealthCardID getHealthCardID() throws HealthCardException {
-            if (!schedule.containsKey(new Date(year, month, day))) throw new HealthCardException();
-            return schedule.get(new Date(year, month, day));
-        }
+
+    public HealthCardID getHealthCardID() throws HealthCardException {
+        if (!schedule.containsKey(new Date(year, month, day))) throw new HealthCardException("error");
+        return schedule.get(new Date(year, month, day));
     }
+
 }
 
