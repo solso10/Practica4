@@ -15,12 +15,12 @@ import java.util.List;
 public interface HealthNationalService {
 
     MedicalPrescription getePrescription(HealthCardID hcID)
-            throws HealthCardException, NotValidePrescriptionException, ConnectException;
+            throws HealthCardException, NotValidePrescriptionException, ConnectException, exceptions.ConnectException;
     List<ProductSpecification> getProductsByKW(String keyWord)
-            throws AnyKeyWordMedicineException, ConnectException;
+            throws AnyKeyWordMedicineException, ConnectException, exceptions.ConnectException;
     ProductSpecification getProductSpecific(int opt)
-            throws AnyMedicineSearchException, ConnectException;
+            throws AnyMedicineSearchException, ConnectException, exceptions.ConnectException;
     MedicalPrescription sendePrescription(MedicalPrescription ePresc)
-            throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription;
+            throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, exceptions.ConnectException;
 
 }
