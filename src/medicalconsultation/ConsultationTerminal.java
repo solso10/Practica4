@@ -12,46 +12,69 @@ import java.util.List;
 
 public class ConsultationTerminal {
 
-    private HealthNationalService hns;
+    private HealthNationalService HNS;
     private ScheduledVisitAgenda visitAgenda;
     private HealthCardID hcID;
     private MedicalPrescription prescription;
-    private ProductID pID;
+    private ProductID product;
     private final DigitalSignature signature;
     private final Date today = new Date();
-    private List<ProductSpecification> lastSearch;
+    private List<ProductSpecification> search;
+    private ProductSpecification specification;
 
-    public void initRevision() {
+    public ConsultationTerminal(DigitalSignature signature) {
+        this.signature = signature;
+    }
 
-    } throws HealthCardException,NotValidePrescriptionException, ConnectException;
+    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException, java.net.ConnectException {
+        hcID = visitAgenda.getHealthCardID();
+        if (hcID == null)  throw new HealthCardException("identificacion incorrecta");
+        prescription = HNS.getePrescription(hcID);
+        if (prescription == null) throw new NotValidePrescriptionException("prescripcion no valida");
+    }
 
-    public void initPrescriptionEdition() {
+    public void initPrescriptionEdition() throws AnyCurrentPrescriptionException, NotFinishedTreatmentException {
+        if (prescription.getEndDate().before(today)) throw new NotFinishedTreatmentException("Tratamineto no terminado");
+        if (prescription == null ) throw new AnyCurrentPrescriptionException("No hay prescripcion");
+    }
 
-    } throws AnyCurrentPrescriptionException, NotFinishedTreatmentException;
+    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, java.net.ConnectException {
+        search = HNS.getProductsByKW(keyWord);
+        if (search == null) throw new AnyKeyWordMedicineException("no hay ninguna keyWord");
 
-    public void searchForProducts(String keyWord) {
+    }
 
-    } throws AnyKeyWordMedicineException, ConnectException;
+    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException, java.net.ConnectException {
+        specification = HNS.getProductSpecific(option);
+        if (specification == null ) throw new AnyMedicineSearchException("No hay ningun medicamento");
+        product = specification.getUPCcode();
 
-    public void selectProduct(int option) {
+    }
 
-    } throws AnyMedicineSearchException, ConnectException;
+    public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException {
+        if (prescription == null) throw new AnySelectedMedicineException("No hay prescripcion");
+        prescription.addLine(product,instruc);
+    }
 
-    public void enterMedicineGuidelines(String[] instruc) {
+    public void enterTreatmentEndingDate(Date date) throws IncorrectEndingDateException {
 
-    } throws AnySelectedMedicineException, IncorrectTakingGuidelinesException;
+        if(date.before(today)) throw new IncorrectEndingDateException("Fecha incorrecta");
+        prescription.setEndDate(new Date(2023, 4,28));
+    }
 
-    public void enterTreatmentEndingDate(Date date) {
-    } throws IncorrectEndingDateException;
+    public void sendePrescription() throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, java.net.ConnectException {
 
-    public void sendePrescription() {
+        if(prescription == null) throw new NotValidePrescription("No hay prescripcion");
+        prescription.seteSign(signature);
+        prescription = HNS.sendePrescription(prescription);
 
-    } throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription;
+    }
 
-    public void printePresc() {
+    public void printePresc() throws printingException {
+        if(prescription == null) throw new printingException("No hay nada que imprimir");
+        System.out.println(prescription.toString());
+    }
 
-    } throws printingException;
-  // Other methods, apart from the input events
 
     public HealthCardID getHcID() {
         return hcID;
@@ -62,7 +85,7 @@ public class ConsultationTerminal {
     }
 
     public ProductID getpID() {
-        return pID;
+        return product;
     }
 
     public DigitalSignature getSign() {
@@ -70,7 +93,7 @@ public class ConsultationTerminal {
     }
 
     public List<ProductSpecification> getLastSearch() {
-        return lastSearch;
+        return search;
     }
 
     public void setSchedAgenda(ScheduledVisitAgenda visitAgenda) {
@@ -78,7 +101,7 @@ public class ConsultationTerminal {
     }
 
     public void setHns(HealthNationalService hns) {
-        this.hns = hns;
+        this.HNS = hns;
     }
 
     public void setHcID(HealthCardID hcID) {
@@ -90,6 +113,6 @@ public class ConsultationTerminal {
     }
 
     public void setLastSearch(List<ProductSpecification> lastSearch) {
-        this.lastSearch = lastSearch;
+        this.search = lastSearch;
     }
 }
