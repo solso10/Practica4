@@ -42,14 +42,12 @@ public class ConsultationTerminal {
     public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, java.net.ConnectException {
         search = HNS.getProductsByKW(keyWord);
         if (search == null) throw new AnyKeyWordMedicineException("no hay ninguna keyWord");
-
     }
 
     public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException, java.net.ConnectException {
         specification = HNS.getProductSpecific(option);
         if (specification == null ) throw new AnyMedicineSearchException("No hay ningun medicamento");
         product = specification.getUPCcode();
-
     }
 
     public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException {

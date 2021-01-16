@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProductIDTest {
     @Test
-    @DisplayName("Código null")
     public void nullCode() {
         Throwable exception = assertThrows(NullPointerException.class, () -> {
             new ProductID(null);
@@ -18,7 +17,6 @@ public class ProductIDTest {
     }
 
     @Test
-    @DisplayName("Código vacío")
     public void emptyCode() {
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new ProductID("");
@@ -27,7 +25,6 @@ public class ProductIDTest {
     }
 
     @Test
-    @DisplayName("Código no numerico")
     public void noNumericCode() {
         Throwable exception = assertThrows(ProductIDException.class, () -> {
             new ProductID("09838aft78");
@@ -36,7 +33,6 @@ public class ProductIDTest {
     }
 
     @Test
-    @DisplayName("Código bien formado")
     public void validCode() throws ProductIDException {
         ProductID prodId = new ProductID("0983878");
         assertEquals("0983878", prodId.getProductID());

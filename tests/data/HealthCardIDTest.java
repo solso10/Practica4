@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HealthCardIDTest {
     @Test
-    @DisplayName("Código null")
     public void nullCode(){
         Throwable exception = assertThrows(NullPointerException.class,()->{
             new HealthCardID(null);
@@ -17,7 +16,6 @@ public class HealthCardIDTest {
     }
 
     @Test
-    @DisplayName("Código vacío")
     public void emptyCode(){
         Throwable exception = assertThrows(IllegalArgumentException.class, () ->{
             new HealthCardID("");
@@ -26,7 +24,6 @@ public class HealthCardIDTest {
     }
 
     @Test
-    @DisplayName("Código no válido")
     public void notValidCode(){
         Throwable exception = assertThrows(IllegalArgumentException.class, () ->{
             new HealthCardID("ABC123456789");
@@ -36,7 +33,6 @@ public class HealthCardIDTest {
     }
 
     @Test
-    @DisplayName("Código bien formado")
     public void validCode(){
         HealthCardID id = new HealthCardID("ABCD1234567890");
         assertEquals("ABCD1234567890", id.getPersonalID());
