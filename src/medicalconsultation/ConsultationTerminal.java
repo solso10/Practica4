@@ -5,7 +5,9 @@ import data.HealthCardID;
 import data.ProductID;
 import exceptions.*;
 import services.HealthNationalService;
+import services.HealthNationalServiceClass;
 import services.ScheduledVisitAgenda;
+import services.ScheduledVisitAgendaClass;
 
 import java.util.Date;
 import java.util.List;
@@ -18,14 +20,17 @@ public class ConsultationTerminal {
     private MedicalPrescription prescription;
     private ProductID product;
     private final DigitalSignature signature;
-    private final Date today = new Date();
+    private final Date today = new Date(2021, 1, 16);
     private List<ProductSpecification> search;
     private ProductSpecification specification;
 
 
-    public ConsultationTerminal(DigitalSignature signature) {
+    public ConsultationTerminal(DigitalSignature signature) throws IncorrectTakingGuidelinesException, Exception {
+        this.HNS = new HealthNationalServiceClass();
+        this.visitAgenda = new ScheduledVisitAgendaClass();
         this.signature = signature;
     }
+
 
     public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException, java.net.ConnectException {
         hcID = visitAgenda.getHealthCardID();
@@ -35,11 +40,14 @@ public class ConsultationTerminal {
     }
 
     public void initPrescriptionEdition() throws AnyCurrentPrescriptionException, NotFinishedTreatmentException {
-        if (prescription.getEndDate().before(today)) throw new NotFinishedTreatmentException("Tratamineto no terminado");
         if (prescription == null ) throw new AnyCurrentPrescriptionException("No hay prescripcion");
+        if (prescription.getEndDate().before(today)) throw new NotFinishedTreatmentException("Tratamineto no terminado");
+
     }
 
     public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, java.net.ConnectException {
+        if(keyWord == null) throw new AnyKeyWordMedicineException("Cadena vacia");
+        if(keyWord.equals("")) throw new AnyKeyWordMedicineException("Cadena vacia");
         search = HNS.getProductsByKW(keyWord);
         if (search == null) throw new AnyKeyWordMedicineException("no hay ninguna keyWord");
 
