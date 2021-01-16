@@ -16,7 +16,7 @@ public class MedicalPrescription {
     private Date endDate;
     private HealthCardID hcID;
     private DigitalSignature eSign;
-    private ArrayList<MedicalPrescriptionLine> prescriptionLines;
+    private ArrayList<MedicalPrescriptionLine> prescriptionLines = new ArrayList<>();
 
     public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign) {
         this.prescCode = prescCode;
