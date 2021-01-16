@@ -22,6 +22,7 @@ public class ConsultationTerminal {
     private List<ProductSpecification> search;
     private ProductSpecification specification;
 
+
     public ConsultationTerminal(DigitalSignature signature) {
         this.signature = signature;
     }
