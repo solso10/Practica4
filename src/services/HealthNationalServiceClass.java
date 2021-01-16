@@ -16,7 +16,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
     private Map<HealthCardID, MedicalPrescription> prescriptions = new HashMap<>();
     private Map<String, List<ProductSpecification>> products = new HashMap<>();
 
-    private List<ProductSpecification> newProducts;
+    private List<ProductSpecification> newProducts = new ArrayList<>();
     private int newPresCode = 0;
     private HealthCardID newHealthCard;
     private MedicalPrescription newMedicalPrescription;
@@ -29,14 +29,16 @@ public class HealthNationalServiceClass implements HealthNationalService {
     @Override
     public MedicalPrescription getePrescription(HealthCardID hcID) throws HealthCardException, NotValidePrescriptionException, ConnectException{
         try {
-            if (!prescriptions.containsKey(hcID)){
-                newHealthCard = null;
-                throw new HealthCardException("error 1");
-            }
             if (prescriptions.get(hcID) == null){
                 newHealthCard = null;
                 throw new NotValidePrescriptionException("error 2");
             }
+
+            if (!prescriptions.containsKey(hcID)){
+                newHealthCard = null;
+                throw new HealthCardException("error 1");
+            }
+
         }catch (HealthCardException e) {
             newHealthCard = null;
             throw new HealthCardException("error 3");
@@ -79,10 +81,9 @@ public class HealthNationalServiceClass implements HealthNationalService {
 
     @Override
     public ProductSpecification getProductSpecific(int opt)  throws AnyMedicineSearchException, ConnectException{
+
         try {
             if(newProducts.isEmpty()) throw new AnyMedicineSearchException("Error");
-
-            if(newProducts == null) throw new AnyMedicineSearchException("Error");
 
             if(opt > newProducts.size()) throw new AnyMedicineSearchException("Error");
 
@@ -124,7 +125,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
     }
 
 
-    private void setUpPrescriptions() throws ProductIDException, IncorrectTakingGuidelinesException{
+    public void setUpPrescriptions() throws ProductIDException, IncorrectTakingGuidelinesException{
 
         HealthCardID hcdi1 = new HealthCardID("ABCD1234567890");
         HealthCardID hcdi2 = new HealthCardID("EFGH2345678901");
@@ -157,7 +158,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
 
     }
 
-    private void setUpProducts() throws ProductIDException{
+    public void setUpProducts() throws ProductIDException{
 
         ProductID prodID1 = new ProductID("1010115");
         ProductID prodID2 = new ProductID("1010116");
@@ -168,8 +169,8 @@ public class HealthNationalServiceClass implements HealthNationalService {
         ProductSpecification ps1 = new ProductSpecification(prodID1, desc1, new BigDecimal(10.0));
         ProductSpecification ps2 = new ProductSpecification(prodID2, desc2, new BigDecimal(4.5));
 
-        products.put("Medicamento 1", new ArrayList<ProductSpecification>(List.of(ps1)));
-        products.put("Medicamento 2", new ArrayList<ProductSpecification>(List.of(ps2)));
+        products.put("Medicamento 1", new ArrayList<>(Arrays.asList(ps1, ps2)));
+        products.put("Medicamento 2", new ArrayList<>(Arrays.asList(ps2, ps1)));
     }
 
 }
