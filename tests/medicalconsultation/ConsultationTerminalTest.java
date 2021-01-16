@@ -10,7 +10,7 @@ import services.HealthNationalServiceClass;
 import services.ScheduledVisitAgendaClass;
 
 
-import java.util.Calendar;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,93 +28,67 @@ public class ConsultationTerminalTest {
     private String[] instruct;
 
 
-
-
     @BeforeEach
-    void setUp(){
-       /* consultation = new ConsultationTerminal(new DigitalSignature("DOCTOR".getBytes()));
+    void setUp() throws IncorrectTakingGuidelinesException, Exception {
+        signature = new DigitalSignature("DR".getBytes());
+        consultation = new ConsultationTerminal(signature);
+        HNS = new HealthNationalServiceClass();
+        visitAgenda = new ScheduledVisitAgendaClass();
         consultation.setHcID(hcID);
         consultation.setSchedAgenda(visitAgenda);
         hcID = new HealthCardID("ABCD1234567890");
 
-        prescription = new MedicalPrescription(123, new Date(2020, 2,28), new Date(2021,2,29),hcID, signature);
-        instruct = new String[] {"AFTERBREAKFAST","7","abc","5","4","DAY"};*/
+        prescription = new MedicalPrescription(1234, new Date(2020,12,20), new Date(2020,12,30), hcID, signature);
+        instruct = new String[] {"AFTERBREAKFAST","7","abc","5","4","DAY"};
     }
 
     @Test
-    void initRevisonTest() throws HealthCardException, ConnectException, NotValidePrescriptionException, java.net.ConnectException {
-
-        consultation = new ConsultationTerminal(new DigitalSignature("DOCTOR".getBytes()));
-        hcID = new HealthCardID("ABCD1234567890");
-        prescription = new MedicalPrescription(123, new Date(2020, 2,28), new Date(2021,2,29),hcID, signature);
-
+    void initRevisonTest() throws Exception, IncorrectTakingGuidelinesException {
         consultation.initRevision();
-        assertEquals(consultation.getHcID(),hcID);
-        assertEquals(prescription,consultation.getMedPresc());
 
-
-
-
-
-        /*HealthCardID hcID = new HealthCardID("ABCD1234567890");
-        consultation.setHcID(hcID);
-        assertEquals(consultation.getHcID(),hcID);*/
-
-
-
-
-      /* consultation.initRevision();
         assertEquals(hcID,consultation.getHcID());
-        assertEquals(prescription,consultation.getMedPresc());*/
+        assertNotEquals(prescription,consultation.getMedPresc());
 
-     /*   TakingGuideline tkg1 = new TakingGuideline(dayMoment.DURINGDINNER,4f,"medicamento para el dolor de cabeza", 2f, 4f, FqUnit.DAY);
-        TakingGuideline tkg2 = new TakingGuideline(dayMoment.DURINGBREAKFAST,6f,"medicamento para el dolor de estomago", 10f, 2f, FqUnit.MONTH);
-        prescriptionline.setTguide(tkg1);
+        ProductID prodID1 = new ProductID("1010115");
+        ProductID prodID2 = new ProductID("1010116");
 
-        assertEquals(prescriptionline.getTguide(), tkg1);
-        assertNotEquals(prescriptionline.getTguide(), tkg2);*/
+        String[] array1 = new String[]{"AFTERBREAKFAST", "2","medicamento para  el dolor de cabeza","2","4", "DAY"};
+        String[] array2 = new String[]{"BEFOREBREAKFAST", "3","medicamento para  el dolor de pecho","3","6", "HOUR"};
+        prescription.addLine(prodID1,array1);
+        prescription.addLine(prodID2,array2);
+
     }
 
     @Test
     void initPrescriptionEditionTest(){
 
         assertThrows(AnyCurrentPrescriptionException.class, () -> {consultation.initPrescriptionEdition();});
+        consultation.setMedPresc(prescription);
         assertThrows(NotFinishedTreatmentException.class, () -> {consultation.initPrescriptionEdition();});
     }
 
     @Test
-    void searchForProductsTest(){
+    void searchForProductsTest() throws ConnectException, java.net.ConnectException, AnyKeyWordMedicineException, ProductIDException {
 
+        consultation.searchForProducts("Medicamento 1");
+        assertThrows(AnyKeyWordMedicineException.class, () -> { consultation.searchForProducts(""); });
+        assertThrows(AnyKeyWordMedicineException.class, () -> { consultation.searchForProducts(null); });
 
-    }
-
-    @Test
-    void selectProduct(){
-
+        //ProductSpecification ps = new ProductSpecification(new ProductID("1010115"), "Ingerir via oral", new BigDecimal(10.0));
+        //Falta fer un assert equals
     }
 
     @Test
     void enterMedicineGuidelinesTest() throws java.net.ConnectException, AnyMedicineSearchException, ConnectException, AnyKeyWordMedicineException, ProductIDException, IncorrectTakingGuidelinesException, AnySelectedMedicineException, ProductNotInPrescription {
-
         assertThrows(AnySelectedMedicineException.class, () -> { consultation.enterMedicineGuidelines(null); });
 
         consultation.searchForProducts("paracetamol");
-      /*  consultation.selectProduct(1);
+        consultation.selectProduct(1);
         consultation.enterMedicineGuidelines(instruct);
 
         prescription.addLine(new ProductID("000736484763"), instruct);
 
         assertEquals(consultation.getMedPresc(), prescription);
-        prescription.removeLine(new ProductID("000736484763"));*/
+        prescription.removeLine(new ProductID("000736484763"));
     }
-
-    @Test
-    void enterTreatmentEndingDateTest(){
-        assertThrows(IncorrectEndingDateException.class, () -> {consultation.enterTreatmentEndingDate(new Date(2019-1900, Calendar.DECEMBER, 15));});
-        Date end = new Date(2023, 4, 28);
-
-        assertEquals(end, consultation.getMedPresc().getEndDate());
-    }
-
-
 }
