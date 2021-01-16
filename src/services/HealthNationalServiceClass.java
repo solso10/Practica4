@@ -31,21 +31,21 @@ public class HealthNationalServiceClass implements HealthNationalService {
         try {
             if (!prescriptions.containsKey(hcID)){
                 newHealthCard = null;
-                throw new HealthCardException("error");
+                throw new HealthCardException("error 1");
             }
             if (prescriptions.get(hcID) == null){
                 newHealthCard = null;
-                throw new NotValidePrescriptionException("error");
+                throw new NotValidePrescriptionException("error 2");
             }
         }catch (HealthCardException e) {
             newHealthCard = null;
-            throw new HealthCardException("error");
+            throw new HealthCardException("error 3");
         } catch (NotValidePrescriptionException e) {
             newHealthCard = null;
-            throw new NotValidePrescriptionException("error");
+            throw new NotValidePrescriptionException("error 4");
         } catch (Exception e) {
             newHealthCard = null;
-            throw new ConnectException("error");
+            throw new ConnectException("error 5");
         }
         newHealthCard = hcID;
         return prescriptions.get(hcID);

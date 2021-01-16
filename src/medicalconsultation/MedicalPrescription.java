@@ -57,7 +57,7 @@ public class MedicalPrescription {
             prescriptionLines.add(new MedicalPrescriptionLine(prodID, dM, du, instruc[2], d, f, u));
 
         }catch (Exception e){
-            throw new IncorrectTakingGuidelinesException("Error");
+            throw new IncorrectTakingGuidelinesException("Error11");
         }
    }
 
