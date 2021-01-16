@@ -92,7 +92,47 @@ public class HealthNationalServiceTest {
     }
 
     @Test
-    void sendePrescription() throws ProductIDException, IncorrectTakingGuidelinesException{
+    void sendePrescription() throws ProductIDException, IncorrectTakingGuidelinesException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, ConnectException, NotValidePrescriptionException, HealthCardException{
+
+        HealthCardID hcdi1 = new HealthCardID("ABCD1234567890");
+        HealthCardID hcdi2 = new HealthCardID("EFGH2345678901");
+        HealthCardID hcdi3 = new HealthCardID("IJKL3456789012");
+
+        DigitalSignature ds = new DigitalSignature("DR".getBytes());
+
+        MedicalPrescription mp1 = new MedicalPrescription(1234, new Date(2020,12,20), new Date(2020,12,30), hcdi1, ds);
+        MedicalPrescription mp2 = new MedicalPrescription(5678, null, null, hcdi2, ds);
+        MedicalPrescription mp3 = new MedicalPrescription(5678, new Date(2020,12,20), new Date(2020,12,30), null, ds);
+        MedicalPrescription mp4 = new MedicalPrescription(5678, new Date(2020,12,20), new Date(2020,12,30), hcdi3, null);
+
+        ProductID prodID1 = new ProductID("1010115");
+        ProductID prodID2 = new ProductID("1010116");
+        ProductID prodID3 = new ProductID("1010117");
+        ProductID prodID4 = new ProductID("1010118");
+
+        String[] array1 = new String[]{"AFTERBREAKFAST", "2","medicamento para  el dolor de cabeza","2","4", "DAY"};
+        String[] array2 = new String[]{"BEFOREBREAKFAST", "3","medicamento para  el dolor de pecho","3","6", "HOUR"};
+        String[] array3 = new String[]{"DURINGBREAKFAST", "4","medicamento para  el dolor de corazon","4","5", "WEEK"};
+        String[] array4 = new String[]{"AFTERDINNER", "5","medicamento para  el dolor de pie","7","8", "WEEK"};
+
+        mp3.addLine(prodID1,array1);
+        mp4.addLine(prodID2,array2);
+        mp2.addLine(prodID3,array3);
+        mp2.addLine(prodID4,array4);
+
+        assertThrows(NotValidePrescription.class, () -> {hnService.sendePrescription(mp1);});
+        assertThrows(eSignatureException.class, () -> {hnService.sendePrescription(mp4);});
+        assertThrows(NotCompletedMedicalPrescription.class, () -> {hnService.sendePrescription(mp2);});
+        assertThrows(NotCompletedMedicalPrescription.class, () -> {hnService.sendePrescription(mp2);});
+        assertThrows(NotCompletedMedicalPrescription.class, () -> {hnService.sendePrescription(mp3);});
+
+        mp1.addLine(prodID1,array1);
+        mp1.addLine(prodID2,array2);
+
+        MedicalPrescription mp5 = hnService.getePrescription(hcdi1);
+
+        assertEquals(mp5, hnService.sendePrescription(mp5));
+
 
     }
 

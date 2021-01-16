@@ -17,7 +17,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
     private Map<String, List<ProductSpecification>> products = new HashMap<>();
 
     private List<ProductSpecification> newProducts = new ArrayList<>();
-    private int newPresCode = 0;
+    private int newPresCode;
     private HealthCardID newHealthCard;
     private MedicalPrescription newMedicalPrescription;
 
@@ -50,6 +50,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
             throw new ConnectException("error 5");
         }
         newHealthCard = hcID;
+
         return prescriptions.get(hcID);
     }
 
@@ -109,8 +110,9 @@ public class HealthNationalServiceClass implements HealthNationalService {
             if(ePresc.getEndDate() == null) throw new NotCompletedMedicalPrescription("Error");
 
             newPresCode += 1;
-            newMedicalPrescription = new MedicalPrescription(newPresCode, ePresc.getPrescDate(), ePresc.getEndDate(), ePresc.getHcID(), ePresc.geteSign());
-            prescriptions.put(newHealthCard, newMedicalPrescription);
+            ePresc.setPrescCode(newPresCode);
+            prescriptions.put(newHealthCard, ePresc);
+
         } catch (NotValidePrescription e) {
             throw new NotValidePrescription("error");
         } catch (eSignatureException e) {
@@ -121,7 +123,7 @@ public class HealthNationalServiceClass implements HealthNationalService {
             throw new ConnectException("error");
         }
 
-        return newMedicalPrescription;
+        return prescriptions.get(newHealthCard);
     }
 
 

@@ -31,7 +31,7 @@ public class ScheduledVisitAgendaTest {
     void getHealthCardIDTest() throws HealthCardException {
 
         assertEquals(scheduledVA.getHealthCardID(), hc1);
-        assertNotEquals(scheduledVA.getHealthCardID(), hc2););});
+        assertNotEquals(scheduledVA.getHealthCardID(), hc2);
 
     }
 }
