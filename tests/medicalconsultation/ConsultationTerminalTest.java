@@ -59,6 +59,12 @@ public class ConsultationTerminalTest {
         prescription.addLine(prodID1,array1);
         prescription.addLine(prodID2,array2);
 
+        assertEquals(prescription.getHcID(), consultation.getMedPresc().getHcID());
+        assertEquals(prescription.getPrescriptionLines().size(), consultation.getMedPresc().getPrescriptionLines().size());
+
+        for(int i = 0; i<prescription.getPrescriptionLines().size(); i++){
+            assertEquals(prescription.getPrescriptionLines().get(i).getProdId(), consultation.getMedPresc().getPrescriptionLines().get(i).getProdId());
+        }
     }
 
     @Test
@@ -70,14 +76,20 @@ public class ConsultationTerminalTest {
     }
 
     @Test
-    void searchForProductsTest() throws ConnectException, java.net.ConnectException, AnyKeyWordMedicineException, ProductIDException, HealthCardException, NotValidePrescriptionException {
+    void searchForProductsTest() throws Exception {
 
-        consultation.searchForProducts("Medicamento 1");
+
         assertThrows(AnyKeyWordMedicineException.class, () -> { consultation.searchForProducts(""); });
         assertThrows(AnyKeyWordMedicineException.class, () -> { consultation.searchForProducts(null); });
 
-        //ProductSpecification ps = new ProductSpecification(new ProductID("1010115"), "Ingerir via oral", new BigDecimal(10.0));
-        //Falta fer un assert equals
+        consultation.searchForProducts("Medicamento 1");
+
+        ProductSpecification ps1 = new ProductSpecification(new ProductID("1010115"), "Ingerir via oral", new BigDecimal(10.0));
+        ProductSpecification ps2 = new ProductSpecification(new ProductID("1010116"), "Aplicar de forma cutanea", new BigDecimal(4.5));
+
+
+        assertEquals(consultation.getLastSearch().get(0).getUPCcode(), ps1.getUPCcode());
+        assertEquals(consultation.getLastSearch().get(1).getUPCcode(), ps2.getUPCcode());
     }
     @Test
     void selectProductTest() throws HealthCardException, ConnectException, NotValidePrescriptionException, java.net.ConnectException, AnyKeyWordMedicineException, AnyMedicineSearchException, ProductIDException {
