@@ -119,10 +119,7 @@ public class ConsultationTerminalTest {
         prescription.addLine(prodID1, instruct);
         prescription.addLine(prodID2,instruct);
         prescription.addLine(prodID3,instruct);
-
-        System.out.println(prescription.getPrescriptionLines().size());
-        System.out.println(consultation.getMedPresc().getPrescriptionLines().size());
-
+        
         assertNotEquals(consultation.getMedPresc(), prescription);
 
     }
